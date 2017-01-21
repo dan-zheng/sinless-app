@@ -30,4 +30,7 @@ dependencies {
 
     //Material Intro
     compile 'com.heinrichreimersoftware:material-intro:1.6'
+
+    //Scrollable List
+    compile 'com.github.traex.expandablelayout:library:1.2.2'
 }
