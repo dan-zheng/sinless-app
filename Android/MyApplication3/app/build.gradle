@@ -36,4 +36,7 @@ dependencies {
 
     //Wheel Spinner
     compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
+
+    //Async HTTP
+    compile 'com.loopj.android:android-async-http:1.4.9'
 }
