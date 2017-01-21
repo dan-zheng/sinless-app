@@ -20,6 +20,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.octocats.sinless.R;
@@ -149,7 +150,7 @@ public class LoginFragment extends SlideFragment {
                             editor.commit();
                             JSONObject account = user.getJSONObject("account");
                             if(account.getInt("balance") > 0){
-                                editor.putInt("balance", account.getInt("_id"));
+                                editor.putInt("balance", account.getInt("balance"));
                                 editor.commit();
                                 Intent i = new Intent(getActivity(), Timeline.class);
                                 startActivity(i);
@@ -161,14 +162,20 @@ public class LoginFragment extends SlideFragment {
                     }
 
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                    public void onFailure(int statusCode, Header[] headers, Throwable t, JSONArray resArr) {
+                        JSONObject response = null;
+                        try {
+                            response = resArr.getJSONObject(0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         Log.e(TAG, response.toString());
                         fakeLogin.setText("Login");
                         email.setEnabled(true);
                         password.setEnabled(true);
                         fakeLogin.setEnabled(true);
                         try {
-                            Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), response.getString("msg"), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

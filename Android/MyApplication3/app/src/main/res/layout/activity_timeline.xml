@@ -10,8 +10,27 @@
                 tools:context=".Timeline"
                 android:background="@color/primary_dark">
 
-
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Balance:"
+        android:textColor="@android:color/white"
+        android:textSize="25dp"
+        android:fontFamily="sans-serif-light"
+        android:id="@+id/lblCb"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$70"
+        android:textColor="@android:color/holo_green_light"
+        android:layout_below="@+id/lblCb"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif"
+        android:id="@+id/txtCb"
+        />
     <com.andexert.expandablelayout.library.ExpandableLayoutListView
+        android:layout_below="@+id/txtCb"
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_marginTop="15dp"

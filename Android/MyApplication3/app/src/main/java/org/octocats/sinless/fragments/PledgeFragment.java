@@ -14,6 +14,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.octocats.sinless.R;
 
@@ -75,6 +76,7 @@ public class PledgeFragment extends SlideFragment{
     public void onDestroy(){
         super.onDestroy();
         String userId = sharedPreferences.getString("userId", null);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
 
         RequestParams params = new RequestParams();
         params.put("id", userId);
@@ -84,10 +86,18 @@ public class PledgeFragment extends SlideFragment{
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.e(TAG, response.toString());
+                editor.putInt("balance", balance);
+                editor.commit();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONArray response) {
+                Log.e(TAG, response.toString());
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                Log.e(TAG, "status"+statusCode);
                 Log.e(TAG, response.toString());
             }
         });
