@@ -31,7 +31,7 @@
                 android:textColor="#fff"
                 android:textSize="25dp"
                 android:textStyle="normal|bold"
-                app:layout_parallaxFactor="0"/>
+                app:layout_parallaxFactor="1"/>
 
             <LinearLayout
                 android:id="@+id/container"
