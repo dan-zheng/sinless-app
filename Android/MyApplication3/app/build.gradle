@@ -30,4 +30,7 @@ dependencies {
 
     //Material Intro
     compile 'com.heinrichreimersoftware:material-intro:1.6'
+
+    //Wheel Spinner
+    compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
 }
