@@ -39,4 +39,11 @@ dependencies {
 
     //Async HTTP
     compile 'com.loopj.android:android-async-http:1.4.9'
+
+    //Seeker
+    compile 'com.github.JesusM:HoloCircleSeekBar:v2.2.2'
+
+    //FAB
+    compile 'com.github.clans:fab:1.6.4'
+
 }
