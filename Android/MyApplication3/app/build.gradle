@@ -33,4 +33,7 @@ dependencies {
 
     //Scrollable List
     compile 'com.github.traex.expandablelayout:library:1.2.2'
+
+    //Wheel Spinner
+    compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
 }
