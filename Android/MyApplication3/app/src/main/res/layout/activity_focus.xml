@@ -37,4 +37,5 @@
             fab:fab_colorRipple="#99FFFFFF"
             android:layout_gravity="center_horizontal"/>
     </LinearLayout>
+
 </LinearLayout>
