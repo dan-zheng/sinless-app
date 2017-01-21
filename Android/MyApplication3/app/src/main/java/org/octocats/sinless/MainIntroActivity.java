@@ -18,18 +18,18 @@ public class MainIntroActivity extends IntroActivity {
         super.onCreate(savedInstanceState);
 
         addSlide(new FragmentSlide.Builder()
-                .background(R.color.colorPrimary)
-                .backgroundDark(R.color.colorPrimaryDark)
+                .background(R.color.primary)
+                .backgroundDark(R.color.primary_dark)
                 .fragment(LoginFragment.newInstance())
                 .build());
         addSlide(new FragmentSlide.Builder()
-                .background(R.color.colorPrimary)
-                .backgroundDark(R.color.colorPrimaryDark)
+                .background(R.color.accent)
+                .backgroundDark(R.color.accent)
                 .fragment(R.layout.check_layout, R.style.AppTheme)
                 .build());
         addSlide(new FragmentSlide.Builder()
-                .background(R.color.colorAccent)
-                .backgroundDark(R.color.colorAccent)
+                .background(R.color.primary)
+                .backgroundDark(R.color.primary_dark)
                 .fragment(PledgeFragment.newInstance())
                 .build());
 

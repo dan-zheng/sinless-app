@@ -13,29 +13,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Login"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+        android:text="SinLess"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:fontFamily="sans-serif-light"
+        android:textSize="35dp"
+        android:layout_margin="15dp"/>
 
-    <EditText
-        android:id="@+id/fakeUsername"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/mi_baseline"
-        android:hint="Username"/>
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/fakePassword"
+        <AutoCompleteTextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:singleLine="true"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"/>
+        android:layout_height="wrap_content">
 
-    <Button
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_password"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:padding="25dp"
         android:id="@+id/fakeLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mi_baseline"
         android:text="Submit"
-        android:theme="@style/AppTheme"/>
+        android:theme="@style/AppTheme"
+        android:textColor="@color/white"/>
 
 </LinearLayout>

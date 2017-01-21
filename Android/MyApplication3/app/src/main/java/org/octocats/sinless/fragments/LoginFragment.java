@@ -35,6 +35,7 @@ public class LoginFragment extends SlideFragment {
 
             loggedIn = true;
             updateNavigation();
+            nextSlide();
         }
     };
 
@@ -52,8 +53,8 @@ public class LoginFragment extends SlideFragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_login, container, false);
 
-        fakeUsername = (EditText) root.findViewById(R.id.fakeUsername);
-        fakePassword = (EditText) root.findViewById(R.id.fakePassword);
+        fakeUsername = (EditText) root.findViewById(R.id.email);
+        fakePassword = (EditText) root.findViewById(R.id.password);
         fakeLogin = (Button) root.findViewById(R.id.fakeLogin);
 
         fakeUsername.setEnabled(!loggedIn);
