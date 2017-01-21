@@ -147,8 +147,10 @@ public class LoginFragment extends SlideFragment {
                         try {
                             JSONObject user = response.getJSONObject("user");
                             editor.putString("userId", user.getString("_id"));
-                            editor.commit();
                             JSONObject account = user.getJSONObject("account");
+                            editor.putLong("timeOfLastText", account.getLong("timeOfLastText"));
+                            editor.commit();
+                            Log.e(TAG, "saved "+account.get("timeOfLastText"));
                             if(account.getInt("balance") > 0){
                                 editor.putInt("balance", account.getInt("balance"));
                                 editor.commit();
@@ -215,18 +217,15 @@ public class LoginFragment extends SlideFragment {
                             try {
                                 JSONObject user = response.getJSONObject("user");
                                 editor.putString("userId", user.getString("_id"));
-                                editor.commit();
                                 JSONObject account = user.getJSONObject("account");
-                                if (account.getInt("balance") > 0) {
-                                    editor.putInt("balance", account.getInt("_id"));
-                                    editor.commit();
-                                    Intent i = new Intent(getActivity(), Timeline.class);
-                                    startActivity(i);
-                                }
+                                editor.putLong("timeOfLastText", account.getLong("timeOfLastText"));
+                                editor.commit();
+                                Log.e(TAG, "saved "+account.get("timeOfLastText"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             loginRunnable.run();
+
                         }
 
                         @Override
@@ -237,7 +236,7 @@ public class LoginFragment extends SlideFragment {
                             password.setEnabled(true);
                             fakeLogin.setEnabled(true);
                             try {
-                                Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), response.getString("msg"), Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

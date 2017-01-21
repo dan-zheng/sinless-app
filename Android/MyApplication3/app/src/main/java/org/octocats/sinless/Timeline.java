@@ -47,6 +47,7 @@ public class Timeline extends AppCompatActivity{
 
     private String userId;
     private int balance = 0;
+    private long timeOfLastText = 0;
 
     private TextView txtCb;
     private FloatingActionButton focusBtn;
@@ -61,6 +62,7 @@ public class Timeline extends AppCompatActivity{
 
         userId = mSharedPreferences.getString("userId", null);
         balance = mSharedPreferences.getInt("balance", 0);
+        timeOfLastText = mSharedPreferences.getLong("timeOfLastText", 0);
 
         txtCb = (TextView) findViewById(R.id.txtCb);
         txtCb.setText("$"+balance);
@@ -123,10 +125,29 @@ public class Timeline extends AppCompatActivity{
         if (c.moveToFirst()) {
             for (int i = 0; i < totalSMS; i++) {
                 String sms = c.getString(c.getColumnIndexOrThrow("body"));
-                String date = c.getString(c.getColumnIndexOrThrow("date"));
+                long date = Long.parseLong(c.getString(c.getColumnIndexOrThrow("date")));
                 if (!c.getString(c.getColumnIndexOrThrow("type")).contains("1")) {
                     if (smsContainsCurse(sms.toLowerCase())) {
+                        Log.e(TAG, "Date " + c.getString(c.getColumnIndexOrThrow("date")));
+                        Log.e(TAG, "Last Text " + timeOfLastText);
                         Log.e(TAG, "Found " + sms);
+                        if(date > timeOfLastText){
+                            RequestParams params = new RequestParams();
+                            params.put("id", userId);
+                            params.put("type", "swear");
+                            params.put("time", c.getString(c.getColumnIndexOrThrow("date")));
+                            client.post(this, URL + "/account/action", params, new JsonHttpResponseHandler(){
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    Log.e(TAG, response.toString());
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                                    Log.e(TAG, response.toString());
+                                }
+                            });
+                        }
                     }
                 }
                 c.moveToNext();
@@ -135,7 +156,6 @@ public class Timeline extends AppCompatActivity{
         // else {
         // throw new RuntimeException("You have no SMS");
         // }
-        c.close();
 
     }
 
