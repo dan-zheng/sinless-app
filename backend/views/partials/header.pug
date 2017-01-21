@@ -1,0 +1,45 @@
+.navbar.navbar-default.navbar-fixed-top
+    .container
+        .navbar-header
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.navbar-brand(href='/')
+                i.fa.fa-smile-o
+                span
+                    | SinLess
+        .collapse.navbar-collapse
+            ul.nav.navbar-nav.navbar-right
+                if !user
+                    li.divider
+                    li(class=(title == 'Login') ? 'active' : undefined)
+                        a(href='/login') Log in
+                    li.divider
+                    li(class=(title == 'Sign up') ? 'active' : undefined)
+                        a(href='/signup') Sign up
+                else
+                    li.divider
+                    li(class=(title == 'Events') ? 'active' : undefined)
+                        a(href='/events') Events
+                    li.divider
+                    li(class=(title == 'Groups') ? 'active' : undefined)
+                        a(href='/groups') Groups
+                    li.dropdown(class=(title == 'Account Management') ? 'active' : undefined)
+                        a.dropdown-toggle(href='#', data-toggle='dropdown')
+                            if user.profile.picture
+                                img(src='#{user.profile.picture}')
+                            else
+                                img(src='#{user.identicon(60)}')
+                            if user.profile.firstName && user.profile.lastName
+                                | #{user.profile.firstName} #{user.profile.lastName}&nbsp;
+                            else
+                                | #{user.profile.firstName || user.email || user.id}&nbsp;
+                            i.caret
+                        ul.dropdown-menu
+                            li
+                                a(href='/account') My Account
+                            li.divider
+                            li
+                                a(href='/logout') Sign out
