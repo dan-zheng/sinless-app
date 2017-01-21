@@ -31,19 +31,31 @@
                 android:textColor="#fff"
                 android:textSize="25dp"
                 android:textStyle="normal|bold"
-                app:layout_parallaxFactor="0"/>
+                app:layout_parallaxFactor="1"/>
 
             <LinearLayout
                 android:id="@+id/container"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:orientation="vertical">
-
+                android:orientation="horizontal"
+                app:layout_parallaxFactor="1.5">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$"
+                    android:textSize="70dp"
+                    android:layout_gravity="center_vertical"/>
                 <com.aigestudio.wheelpicker.WheelPicker
+                    android:layout_margin="25dp"
                     android:id="@+id/amount"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:wheel_item_text_color="@android:color/white"
+                    app:wheel_visible_item_count="3"
+                    app:wheel_curved="true"
+                    app:wheel_item_text_size="70dp"
+                    app:wheel_atmospheric="true"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
