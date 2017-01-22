@@ -1,9 +1,7 @@
 package org.octocats.sinless;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -107,17 +105,9 @@ import com.github.clans.fab.FloatingActionButton;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        new AlertDialog.Builder(getApplicationContext())
-                                .setTitle("Focus Session Succcesful!")
-                                .setMessage("Good job focusing!")
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent i = new Intent(Focus.this, Timeline.class);
-                                        i.putExtra("focus", true);
-                                        startActivity(i);
-                                    }
-                                })
-                                .show();
+                        Intent i = new Intent(Focus.this, Timeline.class);
+                        i.putExtra("focus", 1);
+                        startActivity(i);
 
 
                         //  isStopped[0]=true;
