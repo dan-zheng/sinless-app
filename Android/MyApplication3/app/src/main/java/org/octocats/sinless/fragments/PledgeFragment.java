@@ -39,7 +39,7 @@ public class PledgeFragment extends SlideFragment{
         return new PledgeFragment();
     }
 
-    private final String URL = "http://sinless.herokuapp.com/api";
+    private final String URL = "pal-nat186-94-246.itap.purdue.edu:3000/api";
 
     WheelPicker wheelPicker;
     AsyncHttpClient client;
