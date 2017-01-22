@@ -108,8 +108,10 @@ public class DatesAdapter extends BaseExpandableListAdapter {
         actionType.setText(action.getActionType());
 
         TextView amountDed = (TextView) vi.findViewById(R.id.txtAmount);
-        if(action.getAmountDeducted() > 0)
-            amountDed.setText("-$"+action.getAmountDeducted());
+        if(action.getAmountDeducted() > 0) {
+            amountDed.setText("-$" + action.getAmountDeducted());
+            amountDed.setTextColor(vi.getResources().getColor(R.color.red));
+        }
         else if(action.getAmountDeducted() < 0) {
             amountDed.setText("+$"+action.getAmountDeducted()*-1);
             amountDed.setTextColor(vi.getResources().getColor(R.color.green));

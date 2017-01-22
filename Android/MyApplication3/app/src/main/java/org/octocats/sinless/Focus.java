@@ -1,6 +1,8 @@
 package org.octocats.sinless;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,10 +11,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by nisarg on 21/1/17.
  */
+
 
     public class Focus extends AppCompatActivity {
         String TAG = "Focus";
@@ -105,8 +116,31 @@ import com.github.clans.fab.FloatingActionButton;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        SharedPreferences sharedPreferences = getSharedPreferences("SinLess", Context.MODE_PRIVATE);
+                        String userId = sharedPreferences.getString("userId", null);
+
+                        AsyncHttpClient client = new AsyncHttpClient();
+
+                        RequestParams params = new RequestParams();
+                        params.put("id", userId);
+                        params.put("type", "timerDone");
+                        client.post(getApplicationContext(), MainActivity.URL + "/account/action", params, new JsonHttpResponseHandler(){
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                Log.e(TAG, response.toString());
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                                Log.e(TAG, response.toString());
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONArray response) {
+                            }
+                        });
                         Intent i = new Intent(Focus.this, Timeline.class);
-                        i.putExtra("focus", 1);
+                        i.putExtra("focus", "1");
                         startActivity(i);
 
 
@@ -117,6 +151,37 @@ import com.github.clans.fab.FloatingActionButton;
             }
         }.start();
         }
+    @Override
+    public void onDestroy(){
+
+        SharedPreferences sharedPreferences = getSharedPreferences("SinLess", Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId", null);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        RequestParams params = new RequestParams();
+        params.put("id", userId);
+        params.put("type", "timer");
+        client.post(this, MainActivity.URL + "/account/action", params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.e(TAG, response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                Log.e(TAG, response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONArray response) {
+            }
+        });
+        super.onDestroy();
     }
+    }
+
+
+
 
 

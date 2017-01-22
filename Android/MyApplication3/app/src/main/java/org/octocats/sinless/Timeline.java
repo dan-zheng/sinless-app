@@ -46,7 +46,7 @@ public class Timeline extends AppCompatActivity{
 
     private String TAG = "Timeline";
 
-    public final String URL = "http://52.27.130.78:3000/api";
+    public final String URL = "http://pal-nat186-94-246.itap.purdue.edu:3000/api";
 
     private HashMap<String, ArrayList<Action>> dataMap = new HashMap<>();
     private ArrayList<String> dates = new ArrayList<>();
@@ -58,7 +58,7 @@ public class Timeline extends AppCompatActivity{
     AsyncHttpClient client;
 
     private String userId;
-    private int balance = 0;
+    private double balance = 0;
     private long timeOfLastText = 0;
 
     private TextView txtCb;
@@ -75,9 +75,19 @@ public class Timeline extends AppCompatActivity{
         mSharedPreferences = getSharedPreferences("SinLess", Context.MODE_PRIVATE);
         client = new AsyncHttpClient();
 
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null && bundle.getInt("focus") == 1){
-            new AlertDialog.Builder(getApplicationContext())
+        String focus = null;
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                focus= null;
+            } else {
+                focus= extras.getString("focus");
+            }
+        } else {
+            focus = (String) savedInstanceState.getSerializable("focus");
+        }
+        if(focus!= null && focus.equals("1")){
+            AlertDialog ad = new AlertDialog.Builder(getApplicationContext())
                     .setTitle("Focus Session Succcesful!")
                     .setMessage("Good job focusing!")
                     .show();
@@ -130,6 +140,8 @@ public class Timeline extends AppCompatActivity{
             @Override
             public void onRefresh() {
                 getAllAction();
+                balance = mSharedPreferences.getInt("balance", 0);
+                txtCb.setText("$"+balance);
             }
         });
 
@@ -138,7 +150,7 @@ public class Timeline extends AppCompatActivity{
     public void getAllAction() {
         RequestParams params = new RequestParams();
         params.put("id", userId);
-        client.post(this, URL + "/user/data", params, new JsonHttpResponseHandler(){
+        client.post(this, MainActivity.URL + "/user/data", params, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.e(TAG, response.toString());
@@ -203,6 +215,9 @@ public class Timeline extends AppCompatActivity{
                 long date = Long.parseLong(c.getString(c.getColumnIndexOrThrow("date")));
                 if (!c.getString(c.getColumnIndexOrThrow("type")).contains("1")) {
                     if (smsContainsCurse(sms.toLowerCase())) {
+                        userId = mSharedPreferences.getString("userId", null);
+                        timeOfLastText = mSharedPreferences.getLong("timeOfLastText", 0);
+
                         Log.e(TAG, "Date " + c.getString(c.getColumnIndexOrThrow("date")));
                         Log.e(TAG, "Last Text " + timeOfLastText);
                         Log.e(TAG, "Found " + sms);
@@ -211,20 +226,21 @@ public class Timeline extends AppCompatActivity{
                             params.put("id", userId);
                             params.put("type", "swear");
                             params.put("time", c.getString(c.getColumnIndexOrThrow("date")));
-                            client.post(this, URL + "/account/action", params, new JsonHttpResponseHandler(){
+                            client.post(this, MainActivity.URL + "/account/action", params, new JsonHttpResponseHandler(){
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                    Log.e(TAG, response.toString());
+                                    Log.e(TAG, "sms "+response.toString());
                                     getAllAction();
                                 }
 
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
-                                    Log.e(TAG, response.toString());
+                                    Log.e(TAG, "sms "+response.toString());
                                 }
 
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, Throwable t, JSONArray response) {
+                                    Log.e(TAG, "sms "+response.toString());
                                 }
                             });
                         }

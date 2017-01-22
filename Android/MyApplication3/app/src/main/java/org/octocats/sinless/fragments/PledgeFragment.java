@@ -16,6 +16,7 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.octocats.sinless.MainActivity;
 import org.octocats.sinless.R;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class PledgeFragment extends SlideFragment{
         return new PledgeFragment();
     }
 
-    private final String URL = "http://52.27.130.78:3000/api";
+    private final String URL = "http://pal-nat186-94-246.itap.purdue.edu:3000/api";
 
     WheelPicker wheelPicker;
     AsyncHttpClient client;
@@ -85,7 +86,7 @@ public class PledgeFragment extends SlideFragment{
         params.put("id", userId);
         params.put("key", "balance");
         params.put("value", balance);
-        client.post(getContext(), URL + "/account/", params, new JsonHttpResponseHandler(){
+        client.post(getContext(), MainActivity.URL + "/account/", params, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.e(TAG, response.toString());
