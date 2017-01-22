@@ -11,36 +11,36 @@ import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 
 /**
- * Created by nisarg on 21/1/17.
+ * Created by utkyb on 22/1/17.
  */
 
-    public class Focus extends AppCompatActivity {
-        String TAG = "Focus";
-        public final int[] progressValue = new int[1];
+public class Steps extends AppCompatActivity {
+    String TAG = "Steps";
+    public final int[] progressValue = new int[1];
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_focus);
-            //      final HoloCircleSeekBar picker = (HoloCircleSeekBar) findViewById(R.id.picker);
-            EditText timer = (EditText) findViewById(R.id.txtTimer);
-            TextView tv = (TextView) findViewById(R.id.lblTimer);
-            //    picker.getValue();
-            final boolean[] isStopped = {true};
-            //progressValue[0] = Integer.parseInt(timer.getText().toString());
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_steps);
+        //      final HoloCircleSeekBar picker = (HoloCircleSeekBar) findViewById(R.id.picker);
+        EditText timer = (EditText) findViewById(R.id.txtTimer);
+        TextView tv = (TextView) findViewById(R.id.lblTimer);
+        //    picker.getValue();
+        final boolean[] isStopped = {true};
+        //progressValue[0] = Integer.parseInt(timer.getText().toString());
 
-            final int[] count = {0};
-            FloatingActionButton start = (FloatingActionButton) findViewById(R.id.start);
-            start.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TextView tv = (TextView) findViewById(R.id.lblTimer);
-                    EditText timer = (EditText) findViewById(R.id.txtTimer);
+        final int[] count = {0};
+        FloatingActionButton start = (FloatingActionButton) findViewById(R.id.start);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView tv = (TextView) findViewById(R.id.lblTimer);
+                EditText timer = (EditText) findViewById(R.id.txtTimer);
 
-                    Log.e(TAG, "clicked");
-                    isStopped[0] = !isStopped[0];
-                    progressValue[0] = Integer.parseInt(timer.getText().toString());
+                Log.e(TAG, "clicked");
+                isStopped[0] = !isStopped[0];
+                progressValue[0] = Integer.parseInt(timer.getText().toString());
                   /*  while (isStopped[0] == false && progressValue[0] != 0) {
                         tv.setText(String.valueOf(progressValue[0]));
                         Log.e(TAG, "inside while");
@@ -68,17 +68,15 @@ import com.github.clans.fab.FloatingActionButton;
                             count[0] = 0;
                         }
                     }
-
-
                     }*/
-                    TimerTextHelper timerTextHelper = new TimerTextHelper(tv);
-                    if(isStopped[0]==false){
-                        timerTextHelper.start();
+                TimerTextHelper timerTextHelper = new TimerTextHelper(tv);
+                if(isStopped[0]==false){
+                    timerTextHelper.start();
 
-                    }
                 }
+            }
 
-            });
+        });
 
        /*     while(true){
                 String s = tv.toString();
@@ -93,7 +91,7 @@ import com.github.clans.fab.FloatingActionButton;
             }
         */
 
-       new Thread(){
+        new Thread(){
             public void run(){
                 try {
                     Thread.sleep(progressValue[0]*1000);
@@ -101,11 +99,9 @@ import com.github.clans.fab.FloatingActionButton;
                     e.printStackTrace();
                 }
 
-                Intent i = new Intent(Focus.this, Timeline.class);
+                Intent i = new Intent(Steps.this, Timeline.class);
                 startActivity(i);
             }
         }.start();
-        }
     }
-
-
+}
