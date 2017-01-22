@@ -13,9 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.andexert.expandablelayout.library.ExpandableLayoutListView;
 import com.github.clans.fab.FloatingActionButton;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -95,7 +95,7 @@ public class Timeline extends AppCompatActivity{
         getAllAction();
 
         arrayAdapter = new ArrayAdapter<>(this, R.layout.view_row, R.id.header_text, dates);
-        final ExpandableLayoutListView expandableLayoutListView = (ExpandableLayoutListView) findViewById(R.id.listview);
+        final ExpandableListView expandableLayoutListView = (ExpandableListView) findViewById(R.id.listview);
 
         datesAdapter = new DatesAdapter(getApplicationContext(), dataMap, dates);
 
@@ -125,8 +125,6 @@ public class Timeline extends AppCompatActivity{
                         calendar.setTimeInMillis(dataObj.getLong("date"));
                         String dateStr = formatter.format(calendar.getTime());
                         dates.add(dateStr);
-                        arrayAdapter.notifyDataSetChanged();
-
                         Log.e(TAG, "date " + dateStr);
 
                         JSONArray actionsArr = dataObj.getJSONArray("actions");

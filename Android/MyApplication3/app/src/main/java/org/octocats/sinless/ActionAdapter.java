@@ -1,6 +1,7 @@
 package org.octocats.sinless;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ public class ActionAdapter extends BaseAdapter{
 
         TextView amountDed = (TextView) vi.findViewById(R.id.txtAmount);
         amountDed.setText("-$"+action.getAmountDeducted());
+        Log.e("ActionAdapter", "amt "+action.getAmountDeducted());
         return vi;
     }
 }

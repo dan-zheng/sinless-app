@@ -30,7 +30,7 @@
         android:fontFamily="sans-serif"
         android:id="@+id/txtCb"
         />
-    <com.andexert.expandablelayout.library.ExpandableLayoutListView
+    <ExpandableListView
         android:layout_below="@+id/txtCb"
         android:id="@+id/listview"
         android:layout_width="match_parent"
