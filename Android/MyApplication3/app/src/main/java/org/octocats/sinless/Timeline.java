@@ -44,7 +44,7 @@ public class Timeline extends AppCompatActivity{
 
     private String TAG = "Timeline";
 
-    public final String URL = "http://pal-nat186-94-246.itap.purdue.edu:3000/api";
+    public final String URL = "http://pal-nat186-139-206.itap.purdue.edu:3000/api";
 
     private HashMap<String, ArrayList<Action>> dataMap = new HashMap<>();
     private ArrayList<String> dates = new ArrayList<>();
@@ -61,6 +61,7 @@ public class Timeline extends AppCompatActivity{
 
     private TextView txtCb;
     private FloatingActionButton focusBtn;
+    private FloatingActionButton walkBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +78,19 @@ public class Timeline extends AppCompatActivity{
         txtCb = (TextView) findViewById(R.id.txtCb);
         txtCb.setText("$"+balance);
         focusBtn = (FloatingActionButton) findViewById(R.id.fab_focus);
+        walkBtn = (FloatingActionButton) findViewById(R.id.fab_walk);
 
         focusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), Focus.class);
+                startActivity(i);
+            }
+        });
+        walkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), Steps.class);
                 startActivity(i);
             }
         });

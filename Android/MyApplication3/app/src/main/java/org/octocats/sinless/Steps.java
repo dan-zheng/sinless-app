@@ -11,18 +11,18 @@ import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 
 /**
- * Created by nisarg on 21/1/17.
+ * Created by utkyb on 22/1/17.
  */
 
-    public class Focus extends AppCompatActivity {
-        String TAG = "Focus";
-        public final int[] progressValue = new int[1];
+public class Steps extends AppCompatActivity {
+    String TAG = "Steps";
+    public final int[] progressValue = new int[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_focus);
+        setContentView(R.layout.activity_steps);
         //      final HoloCircleSeekBar picker = (HoloCircleSeekBar) findViewById(R.id.picker);
         EditText timer = (EditText) findViewById(R.id.txtTimer);
         TextView tv = (TextView) findViewById(R.id.lblTimer);
@@ -36,14 +36,11 @@ import com.github.clans.fab.FloatingActionButton;
             @Override
             public void onClick(View view) {
                 TextView tv = (TextView) findViewById(R.id.lblTimer);
-                FloatingActionButton start = (FloatingActionButton) findViewById(R.id.start);
                 EditText timer = (EditText) findViewById(R.id.txtTimer);
-                progressValue[0] = Integer.parseInt(timer.getText().toString());
 
                 Log.e(TAG, "clicked");
                 isStopped[0] = !isStopped[0];
-                start.setEnabled(false);
-
+                progressValue[0] = Integer.parseInt(timer.getText().toString());
                   /*  while (isStopped[0] == false && progressValue[0] != 0) {
                         tv.setText(String.valueOf(progressValue[0]));
                         Log.e(TAG, "inside while");
@@ -71,11 +68,9 @@ import com.github.clans.fab.FloatingActionButton;
                             count[0] = 0;
                         }
                     }
-
-
                     }*/
                 TimerTextHelper timerTextHelper = new TimerTextHelper(tv);
-                if (isStopped[0] == false) {
+                if(isStopped[0]==false){
                     timerTextHelper.start();
 
                 }
@@ -96,25 +91,17 @@ import com.github.clans.fab.FloatingActionButton;
             }
         */
 
-        new Thread() {
-            public void run() {
-                while (true) {
-                    if (isStopped[0] == false) {
-                        try {
-                            Thread.sleep(progressValue[0] * 1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                        Intent i = new Intent(Focus.this, Timeline.class);
-                        startActivity(i);
-                        //  isStopped[0]=true;
-                        break;
-                    }
+        new Thread(){
+            public void run(){
+                try {
+                    Thread.sleep(progressValue[0]*1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
+                Intent i = new Intent(Steps.this, Timeline.class);
+                startActivity(i);
             }
         }.start();
-        }
     }
-
-
+}
