@@ -66,7 +66,7 @@ public class LoginFragment extends SlideFragment {
         // Required empty public constructor
     }
 
-    private final String URL = "pal-nat186-94-246.itap.purdue.edu:3000/api";
+    private final String URL = "http://pal-nat186-94-246.itap.purdue.edu:3000/api";
 
     private final String TAG = "LoginFragment";
 
