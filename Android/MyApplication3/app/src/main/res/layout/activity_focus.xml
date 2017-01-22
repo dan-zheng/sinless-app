@@ -16,12 +16,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enter minutes"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+            android:textColor="@color/white"
             android:id="@+id/lblTimer"/>
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtTimer"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:layout_margin="15dp"
+            android:textColor="@color/white"
+            android:textSize="25dp"/>
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/start"
             android:layout_width="wrap_content"

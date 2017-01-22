@@ -15,4 +15,7 @@
     <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
+
+    <color name="green">#dd8BC34A</color>
+    <color name="red">#ddF44336</color>
 </resources>

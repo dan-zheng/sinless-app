@@ -1,5 +1,6 @@
 package org.octocats.sinless;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -63,6 +65,8 @@ public class Timeline extends AppCompatActivity{
     private FloatingActionButton focusBtn;
     private FloatingActionButton walkBtn;
 
+    SwipeRefreshLayout swipeContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,11 +114,15 @@ public class Timeline extends AppCompatActivity{
 
         expandableLayoutListView.setAdapter(datesAdapter);
 
-        //View contentView = (View) findViewById(R.id.rl);
-        //contentView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAllAction();
+            }
+        });
 
-        //RelativeLayout lv = (RelativeLayout) findViewById(R.id.rl);
-        //lv.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
     }
 
     public void getAllAction() {
@@ -146,7 +154,7 @@ public class Timeline extends AppCompatActivity{
                         }
                         dataMap.put(dateStr, actions);
                         datesAdapter.notifyDataSetChanged();
-
+                        swipeContainer.setRefreshing(false);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -161,6 +169,11 @@ public class Timeline extends AppCompatActivity{
     }
 
     public void getAllSms() throws IOException {
+        final ProgressDialog progress = new ProgressDialog(Timeline.this);
+        progress.setMessage("You get max 3 swears per day");
+        progress.setTitle("Checking your SMS");
+        progress.show();
+
         Uri message = Uri.parse("content://sms/");
         ContentResolver cr = this.getContentResolver();
 
@@ -186,11 +199,13 @@ public class Timeline extends AppCompatActivity{
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                     Log.e(TAG, response.toString());
+                                    progress.dismiss();
                                 }
 
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
                                     Log.e(TAG, response.toString());
+                                    progress.dismiss();
                                 }
                             });
                         }
