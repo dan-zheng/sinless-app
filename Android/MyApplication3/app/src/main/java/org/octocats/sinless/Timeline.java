@@ -1,6 +1,5 @@
 package org.octocats.sinless;
 
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -73,16 +72,22 @@ public class Timeline extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null && bundle.getBoolean("focus") == true){
-            new AlertDialog.Builder(getApplicationContext())
-                    .setTitle("Focus Sesion Succcesful!")
-                    .setMessage("Good job focusing!")
-                    .show();
-        }
-
         mSharedPreferences = getSharedPreferences("SinLess", Context.MODE_PRIVATE);
         client = new AsyncHttpClient();
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null && bundle.getBoolean("focus")){
+            new AlertDialog.Builder(getApplicationContext())
+                    .setTitle("Focus Session Succcesful!")
+                    .setMessage("Good job focusing!")
+                    .show();
+        } else {
+            try {
+                getAllSms();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         userId = mSharedPreferences.getString("userId", null);
         balance = mSharedPreferences.getInt("balance", 0);
@@ -108,11 +113,7 @@ public class Timeline extends AppCompatActivity{
             }
         });
 
-        try {
-            getAllSms();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         getAllAction();
 
@@ -182,15 +183,12 @@ public class Timeline extends AppCompatActivity{
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
                 Log.e(TAG, "onFailure");
+                swipeContainer.setRefreshing(false);
             }
         });
     }
 
     public void getAllSms() throws IOException {
-        final ProgressDialog progress = new ProgressDialog(Timeline.this);
-        progress.setMessage("You get max 3 swears per day");
-        progress.setTitle("Checking your SMS");
-        progress.show();
 
         Uri message = Uri.parse("content://sms/");
         ContentResolver cr = this.getContentResolver();
@@ -217,13 +215,16 @@ public class Timeline extends AppCompatActivity{
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                     Log.e(TAG, response.toString());
-                                    progress.dismiss();
+                                    getAllAction();
                                 }
 
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
                                     Log.e(TAG, response.toString());
-                                    progress.dismiss();
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable t, JSONArray response) {
                                 }
                             });
                         }
