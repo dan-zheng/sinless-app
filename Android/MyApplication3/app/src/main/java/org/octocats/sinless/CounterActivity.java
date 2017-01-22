@@ -13,7 +13,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
-class CounterActivity extends Activity implements SensorEventListener {
+public class CounterActivity extends Activity implements SensorEventListener {
 
     private SensorManager sensorManager;
     public static int count = 0;
@@ -22,7 +22,7 @@ class CounterActivity extends Activity implements SensorEventListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_steps);
+        //setContentView(R.layout.activity_steps);
         //count = (TextView) findViewById(R.id.count);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -60,4 +60,5 @@ class CounterActivity extends Activity implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
+
 }

@@ -7,24 +7,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/primary_dark">
+    android:background="@color/primary_dark"
+    android:weightSum="1">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="168dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:ignore="UselessParent">
+        tools:ignore="UselessParent"
+        android:layout_weight="0.07">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enter_daily_step_goal"
             android:id="@+id/lblTimer"/>
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="111dp"
             android:layout_height="wrap_content"
             android:id="@+id/txtTimer"
             android:inputType="number"
             tools:ignore="LabelFor" />
+
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/start"
             android:layout_width="wrap_content"

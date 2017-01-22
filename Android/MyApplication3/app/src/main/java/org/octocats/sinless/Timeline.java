@@ -46,7 +46,7 @@ public class Timeline extends AppCompatActivity{
 
     private String TAG = "Timeline";
 
-    public final String URL = "http://52.27.130.78:3000/api";
+    public final String URL = "http://pal-nat186-94-246.itap.purdue.edu:3000/api";
 
     private HashMap<String, ArrayList<Action>> dataMap = new HashMap<>();
     private ArrayList<String> dates = new ArrayList<>();
