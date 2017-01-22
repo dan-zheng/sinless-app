@@ -36,11 +36,14 @@ import com.github.clans.fab.FloatingActionButton;
                 @Override
                 public void onClick(View view) {
                     TextView tv = (TextView) findViewById(R.id.lblTimer);
+                    FloatingActionButton start = (FloatingActionButton) findViewById(R.id.start);
                     EditText timer = (EditText) findViewById(R.id.txtTimer);
+                    progressValue[0] = Integer.parseInt(timer.getText().toString());
 
                     Log.e(TAG, "clicked");
                     isStopped[0] = !isStopped[0];
-                    progressValue[0] = Integer.parseInt(timer.getText().toString());
+                    start.setEnabled(false);
+
                   /*  while (isStopped[0] == false && progressValue[0] != 0) {
                         tv.setText(String.valueOf(progressValue[0]));
                         Log.e(TAG, "inside while");
@@ -95,14 +98,20 @@ import com.github.clans.fab.FloatingActionButton;
 
        new Thread(){
             public void run(){
-                try {
-                    Thread.sleep(progressValue[0]*1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                while(true) {
+                    if(isStopped[0]==false) {
+                        try {
+                            Thread.sleep(progressValue[0] * 1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
-                Intent i = new Intent(Focus.this, Timeline.class);
-                startActivity(i);
+                        Intent i = new Intent(Focus.this, Timeline.class);
+                        startActivity(i);
+                      //  isStopped[0]=true;
+                        break;
+                    }
+                }
             }
         }.start();
         }
