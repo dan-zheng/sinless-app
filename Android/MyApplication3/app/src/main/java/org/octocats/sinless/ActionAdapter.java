@@ -66,7 +66,12 @@ public class ActionAdapter extends BaseAdapter{
         actionType.setText(action.getActionType());
 
         TextView amountDed = (TextView) vi.findViewById(R.id.txtAmount);
-        amountDed.setText("-$"+action.getAmountDeducted());
+        if(action.getAmountDeducted() > 0)
+            amountDed.setText("-$"+action.getAmountDeducted());
+        else {
+            amountDed.setText("+$"+action.getAmountDeducted()*-1);
+            amountDed.setTextColor(vi.getResources().getColor(R.color.green));
+        }
         Log.e("ActionAdapter", "amt "+action.getAmountDeducted());
         return vi;
     }

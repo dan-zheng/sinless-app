@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -46,7 +47,7 @@ public class Timeline extends AppCompatActivity{
 
     private String TAG = "Timeline";
 
-    public final String URL = "http://pal-nat186-139-206.itap.purdue.edu:3000/api";
+    public final String URL = "http://52.27.130.78:3000/api";
 
     private HashMap<String, ArrayList<Action>> dataMap = new HashMap<>();
     private ArrayList<String> dates = new ArrayList<>();
@@ -71,6 +72,14 @@ public class Timeline extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null && bundle.getBoolean("focus") == true){
+            new AlertDialog.Builder(getApplicationContext())
+                    .setTitle("Focus Sesion Succcesful!")
+                    .setMessage("Good job focusing!")
+                    .show();
+        }
 
         mSharedPreferences = getSharedPreferences("SinLess", Context.MODE_PRIVATE);
         client = new AsyncHttpClient();
@@ -148,7 +157,16 @@ public class Timeline extends AppCompatActivity{
                         ArrayList<Action> actions = new ArrayList<>();
                         for (int j = 0; j < actionsArr.length(); j++) {
                             JSONObject actionJSON = actionsArr.getJSONObject(j);
-                            Action action = new Action(actionJSON.getString("_id"), actionJSON.getLong("time"), actionJSON.getString("actionType"), actionJSON.getInt("amountDeducted"));
+                            String actionType = "swear";
+                            int amtDed;
+                            if(actionJSON.getString("actionType").equals("swear")){
+                                actionType = "You swore via SMS";
+                                amtDed = 1;
+                            } else if (actionJSON.getString("actionType").equals("timer")){
+                                actionType = "You were productive";
+                                amtDed = -1;
+                            }
+                            Action action = new Action(actionJSON.getString("_id"), actionJSON.getLong("time"), actionType, actionJSON.getInt("amountDeducted"));
                             actions.add(action);
                             Log.e(TAG, "" + actionJSON.toString());
                         }

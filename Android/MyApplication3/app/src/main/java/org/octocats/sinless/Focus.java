@@ -107,6 +107,7 @@ import com.github.clans.fab.FloatingActionButton;
                         }
 
                         Intent i = new Intent(Focus.this, Timeline.class);
+                        i.putExtra("focus", true);
                         startActivity(i);
                         //  isStopped[0]=true;
                         break;
