@@ -13,20 +13,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.andexert.expandablelayout.library.ExpandableLayoutListView;
 import com.github.clans.fab.FloatingActionButton;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.octocats.sinless.models.Action;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -38,15 +44,20 @@ public class Timeline extends AppCompatActivity{
 
     private String TAG = "Timeline";
 
-    private final String URL = "http://pal-nat186-94-246.itap.purdue.edu:3000/api";
+    public final String URL = "http://sinless.herokuapp.com/api";
 
-    private final String[] array = {"Jan 18, 2017", "Jan 19, 2017", "Jan 20, 2017", "Jan 21, 2017"};
+    private HashMap<String, ArrayList<Action>> dataMap = new HashMap<>();
+    private ArrayList<String> dates = new ArrayList<>();
+
+    ArrayAdapter<String> arrayAdapter;
+    DatesAdapter datesAdapter;
 
     SharedPreferences mSharedPreferences;
     AsyncHttpClient client;
 
     private String userId;
     private int balance = 0;
+    private long timeOfLastText = 0;
 
     private TextView txtCb;
     private FloatingActionButton focusBtn;
@@ -61,6 +72,7 @@ public class Timeline extends AppCompatActivity{
 
         userId = mSharedPreferences.getString("userId", null);
         balance = mSharedPreferences.getInt("balance", 0);
+        timeOfLastText = mSharedPreferences.getLong("timeOfLastText", 0);
 
         txtCb = (TextView) findViewById(R.id.txtCb);
         txtCb.setText("$"+balance);
@@ -74,42 +86,69 @@ public class Timeline extends AppCompatActivity{
             }
         });
 
-        if(userId==null) {
-            Intent i = new Intent(Timeline.this, MainIntroActivity.class);
-            startActivity(i);
-        } else {
-            if(balance == 0){
-                final int initBalance = mSharedPreferences.getInt("initBalance", 25);
-                RequestParams params = new RequestParams();
-                params.put("id", userId);
-                params.put("key", "balance");
-                params.put("value", initBalance);
-                client.post(this, URL + "/account/", params, new JsonHttpResponseHandler(){
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.e(TAG, response.toString());
-                        balance = initBalance;
-                        txtCb.setText("$"+balance);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
-                        Log.e(TAG, response.toString());
-                    }
-                });
-            }
-        }
-
         try {
             getAllSms();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.view_row, R.id.header_text, array);
-        final ExpandableLayoutListView expandableLayoutListView = (ExpandableLayoutListView) findViewById(R.id.listview);
+        getAllAction();
 
-        expandableLayoutListView.setAdapter(arrayAdapter);
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.view_row, R.id.header_text, dates);
+        final ExpandableListView expandableLayoutListView = (ExpandableListView) findViewById(R.id.listview);
+
+        datesAdapter = new DatesAdapter(getApplicationContext(), dataMap, dates);
+
+        expandableLayoutListView.setAdapter(datesAdapter);
+
+        //View contentView = (View) findViewById(R.id.rl);
+        //contentView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+
+        //RelativeLayout lv = (RelativeLayout) findViewById(R.id.rl);
+        //lv.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    public void getAllAction() {
+        RequestParams params = new RequestParams();
+        params.put("id", userId);
+        client.post(this, URL + "/user/data", params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.e(TAG, response.toString());
+                try {
+                    JSONArray data = response.getJSONArray("data");
+                    for(int i = 0; i < data.length(); i++) {
+                        JSONObject dataObj = data.getJSONObject(i);
+                        SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
+                        // Create a calendar object that will convert the date and time value in milliseconds to date.
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTimeInMillis(dataObj.getLong("date"));
+                        String dateStr = formatter.format(calendar.getTime());
+                        dates.add(dateStr);
+                        Log.e(TAG, "date " + dateStr);
+
+                        JSONArray actionsArr = dataObj.getJSONArray("actions");
+                        ArrayList<Action> actions = new ArrayList<>();
+                        for (int j = 0; j < actionsArr.length(); j++) {
+                            JSONObject actionJSON = actionsArr.getJSONObject(j);
+                            Action action = new Action(actionJSON.getString("_id"), actionJSON.getLong("time"), actionJSON.getString("actionType"), actionJSON.getInt("amountDeducted"));
+                            actions.add(action);
+                            Log.e(TAG, "" + actionJSON.toString());
+                        }
+                        dataMap.put(dateStr, actions);
+                        datesAdapter.notifyDataSetChanged();
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                Log.e(TAG, response.toString());
+            }
+        });
     }
 
     public void getAllSms() throws IOException {
@@ -123,10 +162,29 @@ public class Timeline extends AppCompatActivity{
         if (c.moveToFirst()) {
             for (int i = 0; i < totalSMS; i++) {
                 String sms = c.getString(c.getColumnIndexOrThrow("body"));
-                String date = c.getString(c.getColumnIndexOrThrow("date"));
+                long date = Long.parseLong(c.getString(c.getColumnIndexOrThrow("date")));
                 if (!c.getString(c.getColumnIndexOrThrow("type")).contains("1")) {
                     if (smsContainsCurse(sms.toLowerCase())) {
+                        Log.e(TAG, "Date " + c.getString(c.getColumnIndexOrThrow("date")));
+                        Log.e(TAG, "Last Text " + timeOfLastText);
                         Log.e(TAG, "Found " + sms);
+                        if(date > timeOfLastText){
+                            RequestParams params = new RequestParams();
+                            params.put("id", userId);
+                            params.put("type", "swear");
+                            params.put("time", c.getString(c.getColumnIndexOrThrow("date")));
+                            client.post(this, URL + "/account/action", params, new JsonHttpResponseHandler(){
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    Log.e(TAG, response.toString());
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                                    Log.e(TAG, response.toString());
+                                }
+                            });
+                        }
                     }
                 }
                 c.moveToNext();
@@ -135,7 +193,6 @@ public class Timeline extends AppCompatActivity{
         // else {
         // throw new RuntimeException("You have no SMS");
         // }
-        c.close();
 
     }
 

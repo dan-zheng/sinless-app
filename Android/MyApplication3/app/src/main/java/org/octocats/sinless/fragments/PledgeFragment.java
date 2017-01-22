@@ -24,7 +24,6 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 import static android.content.ContentValues.TAG;
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 /**
  * Created by nisarg on 21/1/17.
@@ -39,6 +38,8 @@ public class PledgeFragment extends SlideFragment{
     public static PledgeFragment newInstance() {
         return new PledgeFragment();
     }
+
+    private final String URL = "http://sinless.herokuapp.com/api";
 
     WheelPicker wheelPicker;
     AsyncHttpClient client;
@@ -64,7 +65,7 @@ public class PledgeFragment extends SlideFragment{
         wheelPicker.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
             @Override
             public void onItemSelected(WheelPicker picker, Object data, int position) {
-                editor.putInt("initBalance", (Integer)data);
+                editor.putInt("balance", (Integer)data);
                 editor.commit();
                 balance = (Integer)data;
             }
@@ -77,6 +78,8 @@ public class PledgeFragment extends SlideFragment{
         super.onDestroy();
         String userId = sharedPreferences.getString("userId", null);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("balance", balance);
+        editor.commit();
 
         RequestParams params = new RequestParams();
         params.put("id", userId);

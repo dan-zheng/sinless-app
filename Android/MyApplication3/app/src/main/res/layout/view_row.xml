@@ -6,12 +6,10 @@
                 android:layout_height="match_parent">
 
 
-    <com.andexert.expandablelayout.library.ExpandableLayoutItem
+    <ExpandableListView
         android:id="@+id/row"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        expandable:headerLayout="@layout/view_header"
-        expandable:contentLayout="@layout/view_content"
+        android:layout_height="match_parent"
         />
 
 </RelativeLayout>

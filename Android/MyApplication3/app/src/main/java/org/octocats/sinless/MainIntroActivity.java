@@ -1,5 +1,8 @@
 package org.octocats.sinless;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
@@ -13,9 +16,22 @@ import org.octocats.sinless.fragments.PledgeFragment;
  */
 
 public class MainIntroActivity extends IntroActivity {
+
+    SharedPreferences mSharedPreferences;
+    String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        mSharedPreferences = getSharedPreferences("SinLess", Context.MODE_PRIVATE);
+        userId = mSharedPreferences.getString("userId", null);
+
+        if(userId != null){
+            Intent i = new Intent(MainIntroActivity.this, Timeline.class);
+            startActivity(i);
+        }
+
 
         addSlide(new FragmentSlide.Builder()
                 .background(R.color.primary)
