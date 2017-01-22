@@ -7,26 +7,23 @@
               android:layout_height="match_parent"
               android:gravity="center"
               android:background="@color/primary_dark">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar
-            android:layout_centerInParent="true"
-            android:id="@+id/picker"
-            android:layout_width="285dp"
-            android:layout_height="290dp"
-            app:max="60"
-            app:pointer_color="@color/accent"
-            app:pointer_halo_color="@color/accent"
-            app:pointer_size="20dp"
-            app:text_color="@color/white"
-            app:text_size="65sp"
-            app:wheel_active_color="@color/accent"
-            app:wheel_unactive_color="@color/primary"
-            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter minutes"
+            android:id="@+id/lblTimer"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTimer"
+            android:inputType="number"/>
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
