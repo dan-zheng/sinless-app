@@ -76,7 +76,7 @@ public class Timeline extends AppCompatActivity{
         client = new AsyncHttpClient();
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null && bundle.getBoolean("focus")){
+        if(bundle != null && bundle.getInt("focus") == 1){
             new AlertDialog.Builder(getApplicationContext())
                     .setTitle("Focus Session Succcesful!")
                     .setMessage("Good job focusing!")
