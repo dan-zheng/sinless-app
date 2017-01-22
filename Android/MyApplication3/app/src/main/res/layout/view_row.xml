@@ -9,9 +9,9 @@
     <com.andexert.expandablelayout.library.ExpandableLayoutItem
         android:id="@+id/row"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         expandable:headerLayout="@layout/view_header"
-        expandable:contentLayout="@layout/view_content"
+        expandable:contentLayout="@layout/view_list"
         />
 
 </RelativeLayout>

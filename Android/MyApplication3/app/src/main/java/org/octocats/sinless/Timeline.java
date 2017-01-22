@@ -21,12 +21,18 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.octocats.sinless.models.Action;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -40,7 +46,11 @@ public class Timeline extends AppCompatActivity{
 
     private final String URL = "http://pal-nat186-94-246.itap.purdue.edu:3000/api";
 
-    private final String[] array = {"Jan 18, 2017", "Jan 19, 2017", "Jan 20, 2017", "Jan 21, 2017"};
+    private HashMap<String, ArrayList<Action>> dataMap = new HashMap<>();
+    private ArrayList<String> dates = new ArrayList<>();
+
+    ArrayAdapter<String> arrayAdapter;
+    DatesAdapter datesAdapter;
 
     SharedPreferences mSharedPreferences;
     AsyncHttpClient client;
@@ -76,42 +86,71 @@ public class Timeline extends AppCompatActivity{
             }
         });
 
-        if(userId==null) {
-            Intent i = new Intent(Timeline.this, MainIntroActivity.class);
-            startActivity(i);
-        } else {
-            if(balance == 0){
-                final int initBalance = mSharedPreferences.getInt("initBalance", 25);
-                RequestParams params = new RequestParams();
-                params.put("id", userId);
-                params.put("key", "balance");
-                params.put("value", initBalance);
-                client.post(this, URL + "/account/", params, new JsonHttpResponseHandler(){
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.e(TAG, response.toString());
-                        balance = initBalance;
-                        txtCb.setText("$"+balance);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
-                        Log.e(TAG, response.toString());
-                    }
-                });
-            }
-        }
-
         try {
             getAllSms();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.view_row, R.id.header_text, array);
+        getAllAction();
+
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.view_row, R.id.header_text, dates);
         final ExpandableLayoutListView expandableLayoutListView = (ExpandableLayoutListView) findViewById(R.id.listview);
 
-        expandableLayoutListView.setAdapter(arrayAdapter);
+        datesAdapter = new DatesAdapter(getApplicationContext(), dataMap, dates);
+
+        expandableLayoutListView.setAdapter(datesAdapter);
+
+        //View contentView = (View) findViewById(R.id.rl);
+        //contentView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+
+        //RelativeLayout lv = (RelativeLayout) findViewById(R.id.rl);
+        //lv.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    public void getAllAction() {
+        RequestParams params = new RequestParams();
+        params.put("id", userId);
+        client.post(this, URL + "/user/data", params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.e(TAG, response.toString());
+                try {
+                    JSONArray data = response.getJSONArray("data");
+                    for(int i = 0; i < data.length(); i++) {
+                        JSONObject dataObj = data.getJSONObject(i);
+                        SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
+                        // Create a calendar object that will convert the date and time value in milliseconds to date.
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTimeInMillis(dataObj.getLong("date"));
+                        String dateStr = formatter.format(calendar.getTime());
+                        dates.add(dateStr);
+                        arrayAdapter.notifyDataSetChanged();
+
+                        Log.e(TAG, "date " + dateStr);
+
+                        JSONArray actionsArr = dataObj.getJSONArray("actions");
+                        ArrayList<Action> actions = new ArrayList<>();
+                        for (int j = 0; j < actionsArr.length(); j++) {
+                            JSONObject actionJSON = actionsArr.getJSONObject(j);
+                            Action action = new Action(actionJSON.getString("_id"), actionJSON.getLong("time"), actionJSON.getString("actionType"), actionJSON.getInt("amountDeducted"));
+                            actions.add(action);
+                            Log.e(TAG, "" + actionJSON.toString());
+                        }
+                        dataMap.put(dateStr, actions);
+                        datesAdapter.notifyDataSetChanged();
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
+                Log.e(TAG, response.toString());
+            }
+        });
     }
 
     public void getAllSms() throws IOException {
