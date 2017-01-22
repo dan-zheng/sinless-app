@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 
+import static org.octocats.sinless.R.styleable.HoloCircleSeekBar;
+
 /**
  * Created by nisarg on 21/1/17.
  */
@@ -18,4 +20,8 @@ public class Focus extends AppCompatActivity {
         HoloCircleSeekBar picker = (HoloCircleSeekBar) findViewById(R.id.picker);
         picker.getValue();
     }
+
+
+
+
 }
