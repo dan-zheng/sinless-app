@@ -44,7 +44,7 @@ public class Timeline extends AppCompatActivity{
 
     private String TAG = "Timeline";
 
-    private final String URL = "http://pal-nat186-94-246.itap.purdue.edu:3000/api";
+    public final String URL = "http://sinless.herokuapp.com/api";
 
     private HashMap<String, ArrayList<Action>> dataMap = new HashMap<>();
     private ArrayList<String> dates = new ArrayList<>();
