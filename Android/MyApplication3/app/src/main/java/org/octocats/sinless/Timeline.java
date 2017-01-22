@@ -61,6 +61,7 @@ public class Timeline extends AppCompatActivity{
 
     private TextView txtCb;
     private FloatingActionButton focusBtn;
+    private FloatingActionButton walkBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +78,19 @@ public class Timeline extends AppCompatActivity{
         txtCb = (TextView) findViewById(R.id.txtCb);
         txtCb.setText("$"+balance);
         focusBtn = (FloatingActionButton) findViewById(R.id.fab_focus);
+        walkBtn = (FloatingActionButton) findViewById(R.id.fab_walk);
 
         focusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), Focus.class);
+                startActivity(i);
+            }
+        });
+        walkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), Steps.class);
                 startActivity(i);
             }
         });

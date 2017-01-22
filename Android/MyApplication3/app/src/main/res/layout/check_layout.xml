@@ -54,7 +54,6 @@
                         android:layout_height="wrap_content"
                         android:scaleX="1.5"
                         android:scaleY="1.5"
-                        android:theme="@style/AppTheme"
                         />
 
                     <TextView
@@ -83,7 +82,6 @@
                         android:layout_height="wrap_content"
                         android:scaleX="1.5"
                         android:scaleY="1.5"
-                        android:theme="@style/AppTheme"
                         />
 
                     <TextView
@@ -112,7 +110,6 @@
                         android:layout_height="wrap_content"
                         android:scaleX="1.5"
                         android:scaleY="1.5"
-                        android:theme="@style/AppTheme"
                         />
 
                     <TextView
@@ -141,7 +138,6 @@
                         android:layout_height="wrap_content"
                         android:scaleX="1.5"
                         android:scaleY="1.5"
-                        android:theme="@style/AppTheme"
                         />
 
                     <TextView
