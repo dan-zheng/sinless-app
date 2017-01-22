@@ -14,4 +14,5 @@
         completions."
     </string>
     <string name="signup"><u>Signup?</u></string>
+    <string name="enter_daily_step_goal">Enter daily step goal</string>
 </resources>
