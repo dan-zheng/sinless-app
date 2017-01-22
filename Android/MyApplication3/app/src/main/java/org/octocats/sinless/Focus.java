@@ -15,37 +15,35 @@ import com.github.clans.fab.FloatingActionButton;
  */
 
 
+public class Focus extends AppCompatActivity {
+    String TAG = "Focus";
+    public final int[] progressValue = new int[1];
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-    public class Focus extends AppCompatActivity {
-        String TAG = "Focus";
-        public final int[] progressValue = new int[1];
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_focus);
+        //      final HoloCircleSeekBar picker = (HoloCircleSeekBar) findViewById(R.id.picker);
+        EditText timer = (EditText) findViewById(R.id.txtTimer);
+        TextView tv = (TextView) findViewById(R.id.lblTimer);
+        //    picker.getValue();
+        final boolean[] isStopped = {true};
+        //progressValue[0] = Integer.parseInt(timer.getText().toString());
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+        final int[] count = {0};
+        FloatingActionButton start = (FloatingActionButton) findViewById(R.id.start);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView tv = (TextView) findViewById(R.id.lblTimer);
+                FloatingActionButton start = (FloatingActionButton) findViewById(R.id.start);
+                EditText timer = (EditText) findViewById(R.id.txtTimer);
+                progressValue[0] = Integer.parseInt(timer.getText().toString());
 
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_focus);
-            //      final HoloCircleSeekBar picker = (HoloCircleSeekBar) findViewById(R.id.picker);
-            EditText timer = (EditText) findViewById(R.id.txtTimer);
-            TextView tv = (TextView) findViewById(R.id.lblTimer);
-            //    picker.getValue();
-            final boolean[] isStopped = {true};
-            //progressValue[0] = Integer.parseInt(timer.getText().toString());
-
-            final int[] count = {0};
-            FloatingActionButton start = (FloatingActionButton) findViewById(R.id.start);
-            start.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TextView tv = (TextView) findViewById(R.id.lblTimer);
-                    FloatingActionButton start = (FloatingActionButton) findViewById(R.id.start);
-                    EditText timer = (EditText) findViewById(R.id.txtTimer);
-                    progressValue[0] = Integer.parseInt(timer.getText().toString());
-
-                    Log.e(TAG, "clicked");
-                    isStopped[0] = !isStopped[0];
-                    start.setEnabled(false);
+                Log.e(TAG, "clicked");
+                isStopped[0] = !isStopped[0];
+                start.setEnabled(false);
 
                   /*  while (isStopped[0] == false && progressValue[0] != 0) {
                         tv.setText(String.valueOf(progressValue[0]));
@@ -77,14 +75,14 @@ import com.github.clans.fab.FloatingActionButton;
 
 
                     }*/
-                    TimerTextHelper timerTextHelper = new TimerTextHelper(tv);
-                    if(isStopped[0]==false){
-                        timerTextHelper.start();
+                TimerTextHelper timerTextHelper = new TimerTextHelper(tv);
+                if (isStopped[0] == false) {
+                    timerTextHelper.start();
 
-                    }
                 }
+            }
 
-            });
+        });
 
        /*     while(true){
                 String s = tv.toString();
@@ -99,10 +97,10 @@ import com.github.clans.fab.FloatingActionButton;
             }
         */
 
-       new Thread(){
-            public void run(){
-                while(true) {
-                    if(isStopped[0]==false) {
+        new Thread() {
+            public void run() {
+                while (true) {
+                    if (isStopped[0] == false) {
                         try {
                             Thread.sleep(progressValue[0] * 1000);
                         } catch (InterruptedException e) {
@@ -111,7 +109,7 @@ import com.github.clans.fab.FloatingActionButton;
 
                         Intent i = new Intent(Focus.this, Timeline.class);
                         startActivity(i);
-                      //  isStopped[0]=true;
+                        //  isStopped[0]=true;
                         break;
                     }
                 }
@@ -119,10 +117,9 @@ import com.github.clans.fab.FloatingActionButton;
         }.start();
 
 
-
-        }
-
-
     }
+
+
+}
 
 
