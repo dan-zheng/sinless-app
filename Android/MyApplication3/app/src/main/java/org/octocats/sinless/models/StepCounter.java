@@ -11,7 +11,7 @@ public class StepCounter
 {
     private static final float NS2S = 1.0f / 1000000000.0f;
     public static final float EPSILON = 0.000000001f;
-    private final float[] deltaRotationVector = new float[4]();
+    private final float[] deltaRotationVector = new float[4];
     private float timestamp;
 
     public void onSensorChanged(SensorEvent event) {
