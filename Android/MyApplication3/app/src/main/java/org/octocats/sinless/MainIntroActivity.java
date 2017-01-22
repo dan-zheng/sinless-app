@@ -40,7 +40,7 @@ public class MainIntroActivity extends IntroActivity {
                 .build());
         addSlide(new FragmentSlide.Builder()
                 .background(R.color.accent)
-                .backgroundDark(R.color.accent)
+                .backgroundDark(R.color.accent_dark)
                 .fragment(R.layout.check_layout, R.style.AppTheme)
                 .build());
         addSlide(new FragmentSlide.Builder()

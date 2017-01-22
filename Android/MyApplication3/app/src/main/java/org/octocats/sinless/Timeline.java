@@ -146,7 +146,7 @@ public class Timeline extends AppCompatActivity{
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject response) {
-                Log.e(TAG, response.toString());
+                Log.e(TAG, "onFailure");
             }
         });
     }

@@ -84,12 +84,22 @@
             android:id="@+id/fab_focus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_next"
+            android:src="@drawable/ic_priority_high_white_24dp"
             fab:fab_size="mini"
             fab:fab_label="Focus"
-            fab:menu_colorNormal="@color/accent"
-            fab:menu_colorPressed="@color/accent_dark"
-            fab:menu_colorRipple="#99FFFFFF"/>
+            fab:fab_colorNormal="@color/accent"
+            fab:fab_colorPressed="@color/accent_dark"
+            fab:fab_colorRipple="#99FFFFFF"/>
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_walk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_directions_walk_white_24dp"
+            fab:fab_size="mini"
+            fab:fab_label="Walk"
+            fab:fab_colorNormal="@color/accent"
+            fab:fab_colorPressed="@color/accent_dark"
+            fab:fab_colorRipple="#99FFFFFF"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 
